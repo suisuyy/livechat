@@ -53,9 +53,17 @@ export class View {
         });
     }
 
-    public displayMessage(sender: string, message: string): void {
+    public displayMessage(sender: string, message: string, audioSrc?: string): void {
         const messageElement = document.createElement('div');
         messageElement.innerHTML = `<strong>${sender}:</strong> ${message}`;
+        if (audioSrc) {
+            const audioElement = document.createElement('audio');
+            audioElement.controls = true;
+            audioElement.src = audioSrc;
+            //set auto play
+            audioElement.setAttribute('autoplay', 'true');
+            messageElement.appendChild(audioElement);
+        }
         this.chatHistory.appendChild(messageElement);
         this.chatHistory.scrollTop = this.chatHistory.scrollHeight;
     }

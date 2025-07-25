@@ -6,6 +6,13 @@ export class Model {
             model: 'gemini-2.5-flash',
             messages: [
                 {
+                    role:'system',
+                    content: [
+                        { type: 'text', text: 'You are a helpful assistant.please be concise, do not speak too much every time, be short, just like normal talk between 2 friends' },
+                    ]
+                }
+                ,
+                {
                     role: 'user',
                     content: [
                         { type: 'text', text },
@@ -16,11 +23,11 @@ export class Model {
         };
 
         if (image) {
-            payload.messages[0].content.push({ type: 'image_url', image_url: { url: image } });
+            payload.messages[1].content.push({ type: 'image_url', image_url: { url: image } });
         }
 
         if (audio) {
-            payload.messages[0].content.push({ type: 'input_audio', input_audio: { data: audio, format: 'wav' } });
+            payload.messages[1].content.push({ type: 'input_audio', input_audio: { data: audio, format: 'wav' } });
         }
 
         try {

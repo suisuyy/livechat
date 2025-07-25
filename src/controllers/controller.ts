@@ -34,10 +34,12 @@ export class Controller {
         }, 200);
     }
 
-    private async handleStopRecording(audioData: string, audioFormat: string, audioSize: number): Promise<void> {
-        this.view.displayMessage('You', `[Audio Message] Format: ${audioFormat}, Size: ${(audioSize / 1024).toFixed(2)} KB`);
+    private async handleStopRecording(audioData: string): Promise<void> {
+        const audioDataUrl = `data:audio/mp4;base64,${audioData}`;
+        this.view.displayMessage('You', '[Audio Message]', audioDataUrl);
         const image = this.view.captureVideoFrame();
-        const response = await this.model.sendMessage('', image, audioData, audioFormat);
-        this.view.displayMessage('AI', response);
+        const response = await this.model.sendMessage('', image, audioData, 'audio/mp4');
+        const aiAudioSrc = `https://text.pollinations.ai/just repeat following text:${encodeURIComponent(response)}?model=openai-audio&voice=nova`;
+        this.view.displayMessage('AI', response, aiAudioSrc);
     }
 }
