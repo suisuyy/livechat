@@ -6,10 +6,10 @@ use google gemini to implement the function, the gemini model support image and 
 
 
 # api reference
-use openai api compitable api, the api url is : https://text.pollinations.ai/openai, this is free api, no api key needed. the model openai-audio seems support text, image and audio input
+use openai api compitable api, the api url is : https://geminiopenaifree.deno.dev/v1/chat/completions, this is free api, no api key needed. the model openai-audio seems support text, image and audio input
 you can send image or audio like this :
 # Get JSON response with image analysis
-curl https://text.pollinations.ai/openai \
+curl https://geminiopenaifree.deno.dev/v1/chat/completions \
   -H "Content-Type: application/json" \
   -d '{
     "model": "openai-audio",
