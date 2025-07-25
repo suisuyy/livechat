@@ -12,7 +12,7 @@ export class Model {
                     ]
                 }
             ],
-            max_tokens: 1000
+            max_tokens: 1600
         };
 
         if (image) {

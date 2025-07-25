@@ -8,12 +8,26 @@
 </head>
 <body>
     <div id="app">
-        <video id="video" autoplay></video>
+        <div id="settings-container" hidden>
+            <h3>Audio Settings</h3>
+            <label for="audio-encoding">Encoding:</label>
+            <select id="audio-encoding">
+                <option value="audio/webm">WebM</option>
+                <option value="audio/wav">WAV</option>
+                <option value="audio/mp4">MP4</option>
+            </select>
+            <label for="audio-quality">Quality (kbps):</label>
+            <input type="number" id="audio-quality" value="128" min="16" max="320">
+            <label for="audio-frequency">Frequency (Hz):</label>
+            <input type="number" id="audio-frequency" value="44100" min="8000" max="48000">
+        </div>
+        <video id="video" autoplay muted></video>
         <div id="chat-container">
             <div id="chat-history"></div>
             <div id="input-container">
                 <input type="text" id="text-input" placeholder="Ask a question...">
                 <button id="send-button">Send</button>
+                <button id="voice-button">Voice</button>
             </div>
         </div>
     </div>

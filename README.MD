@@ -12,7 +12,7 @@ you can send image or audio like this :
 curl https://geminiopenaifree.deno.dev/v1/chat/completions \
   -H "Content-Type: application/json" \
   -d '{
-    "model": "openai-audio",
+    "model": "gemini-2.5-flash",
     "messages": [
       {
         "role": "user",
@@ -27,7 +27,7 @@ curl https://geminiopenaifree.deno.dev/v1/chat/completions \
 
   you can put audio in content too:
   {
-  "model": "openai-audio",
+  "model": "gemini-2.5-flash",
   "messages": [
     {
       "role": "user",
@@ -52,9 +52,7 @@ use modules , make sure each module not too big, less than 250 lines
 
 
 # todo
-write a nice .gitignore
-init npm project with typescript support, use vite for dev 
-build the app, make app   look clean , using minimal style               
+add a voice button, when press and hold, start recording, when press up send the audio to ai and wait for response, if the press interval too short lesss than 2s, do nothing            
 
 
 
