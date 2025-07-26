@@ -11,6 +11,7 @@ export class Controller {
 
         this.view.addSendMessageListener(this.handleSendMessage.bind(this));
         this.view.addVoiceButtonListeners(this.handleStartRecording.bind(this), this.handleStopRecording.bind(this));
+        this.view.addCameraOffButtonListener(this.handleCameraOff.bind(this));
         this.view.startCamera();
 
         // Set initial AI model
@@ -47,5 +48,9 @@ export class Controller {
         const response = await this.model.sendMessage('', image, audioData, 'audio/mp4');
         const aiAudioSrc = `https://text.pollinations.ai/now speak like japanese anime girl, cute and tender; just repeat following text:${encodeURIComponent(response)}?model=openai-audio&voice=sage`;
         this.view.displayMessage('AI', response, aiAudioSrc);
+    }
+
+    private handleCameraOff(): void {
+        this.view.toggleCamera();
     }
 }

@@ -6,13 +6,17 @@ export class View {
     private chatHistory: HTMLDivElement;
     private settingsButton: HTMLButtonElement;
     private cameraSwitchButton: HTMLButtonElement;
+    private cameraOffButton: HTMLButtonElement;
     private settingsContainer: HTMLDivElement;
     private aiModelSelect: HTMLSelectElement;
     private aiModelInput: HTMLInputElement;
     private mediaRecorder: MediaRecorder | null = null;
     private audioChunks: Blob[] = [];
+    private _audioStream: MediaStream | null = null;
+    private _videoStream: MediaStream | null = null;
     private recordingStartTime: number = 0;
     private currentCameraFacingMode: 'user' | 'environment' = 'environment'; // Default to back camera
+    private _isCameraOn: boolean = true;
 
     constructor() {
         this.video = document.getElementById('video') as HTMLVideoElement;
@@ -22,6 +26,7 @@ export class View {
         this.chatHistory = document.getElementById('chat-history') as HTMLDivElement;
         this.settingsButton = document.getElementById('settings-button') as HTMLButtonElement;
         this.cameraSwitchButton = document.getElementById('camera-switch-button') as HTMLButtonElement;
+        this.cameraOffButton = document.getElementById('camera-off-button') as HTMLButtonElement;
         this.settingsContainer = document.getElementById('settings-container') as HTMLDivElement;
         this.aiModelSelect = document.getElementById('ai-model-select') as HTMLSelectElement;
         this.aiModelInput = document.getElementById('ai-model-input') as HTMLInputElement;
@@ -41,6 +46,30 @@ export class View {
         this.aiModelInput.addEventListener('input', () => {
             this.aiModelSelect.value = this.aiModelInput.value;
         });
+
+        this.initializeMedia();
+    }
+
+    private async initializeMedia(): Promise<void> {
+        try {
+            // Get both audio and video streams
+            this._videoStream = await navigator.mediaDevices.getUserMedia({
+                video: { facingMode: this.currentCameraFacingMode }
+            });
+            this._audioStream = await navigator.mediaDevices.getUserMedia({
+                audio: true
+            });
+
+            this.video.srcObject = this._videoStream;
+            this.setupMediaRecorder(this._audioStream);
+            this._isCameraOn = true;
+        } catch (error) {
+            console.error('Error accessing media devices:', error);
+        }
+    }
+
+    public addCameraOffButtonListener(handler: () => void): void {
+        this.cameraOffButton.addEventListener('pointerup', handler);
     }
 
     public addAiModelChangeListener(handler: (model: string) => void): void {
@@ -157,21 +186,26 @@ export class View {
 
     public async startCamera(): Promise<void> {
         try {
-            const stream = await navigator.mediaDevices.getUserMedia({
-                video: { facingMode: this.currentCameraFacingMode },
-                audio: true
+            // Stop current video track if any
+            if (this._videoStream) {
+                this._videoStream.getTracks().forEach(track => track.stop());
+            }
+
+            this._videoStream = await navigator.mediaDevices.getUserMedia({
+                video: { facingMode: this.currentCameraFacingMode }
             });
-            this.video.srcObject = stream;
-            this.setupMediaRecorder(stream);
+            this.video.srcObject = this._videoStream;
+            this._isCameraOn = true;
         } catch (error) {
             console.error('Error accessing camera:', error);
+            this._isCameraOn = false; // Ensure camera state is false on error
         }
     }
 
     private async switchCamera(): Promise<void> {
         // Stop current video track
-        if (this.video.srcObject) {
-            (this.video.srcObject as MediaStream).getTracks().forEach(track => track.stop());
+        if (this._videoStream) {
+            this._videoStream.getTracks().forEach(track => track.stop());
         }
 
         // Toggle camera facing mode
@@ -179,6 +213,20 @@ export class View {
 
         // Start camera with new facing mode
         await this.startCamera();
+    }
+
+    public toggleCamera(): void {
+        if (this._isCameraOn) {
+            // Turn off camera (video only)
+            if (this._videoStream) {
+                this._videoStream.getTracks().forEach(track => track.stop());
+                this.video.srcObject = null;
+            }
+            this._isCameraOn = false;
+        } else {
+            // Turn on camera (video only)
+            this.startCamera();
+        }
     }
 
     private setupMediaRecorder(stream: MediaStream): void {
@@ -219,6 +267,9 @@ export class View {
     }
 
     public captureVideoFrame(): string {
+        if (!this._isCameraOn || !this.video.srcObject) {
+            return ''; // Return empty string if camera is off or no stream
+        }
         const canvas = document.createElement('canvas');
         canvas.width = this.video.videoWidth;
         canvas.height = this.video.videoHeight;
