@@ -4,9 +4,13 @@ export class View {
     private sendButton: HTMLButtonElement;
     private voiceButton: HTMLButtonElement;
     private chatHistory: HTMLDivElement;
+    private settingsButton: HTMLButtonElement;
+    private cameraSwitchButton: HTMLButtonElement;
+    private settingsContainer: HTMLDivElement;
     private mediaRecorder: MediaRecorder | null = null;
     private audioChunks: Blob[] = [];
     private recordingStartTime: number = 0;
+    private currentCameraFacingMode: 'user' | 'environment' = 'environment'; // Default to back camera
 
     constructor() {
         this.video = document.getElementById('video') as HTMLVideoElement;
@@ -14,6 +18,17 @@ export class View {
         this.sendButton = document.getElementById('send-button') as HTMLButtonElement;
         this.voiceButton = document.getElementById('voice-button') as HTMLButtonElement;
         this.chatHistory = document.getElementById('chat-history') as HTMLDivElement;
+        this.settingsButton = document.getElementById('settings-button') as HTMLButtonElement;
+        this.cameraSwitchButton = document.getElementById('camera-switch-button') as HTMLButtonElement;
+        this.settingsContainer = document.getElementById('settings-container') as HTMLDivElement;
+
+        this.settingsButton.addEventListener('click', () => {
+            this.settingsContainer.hidden = !this.settingsContainer.hidden;
+        });
+
+        this.cameraSwitchButton.addEventListener('click', () => {
+            this.switchCamera();
+        });
     }
 
     public getTextInputValue(): string {
@@ -106,12 +121,28 @@ export class View {
 
     public async startCamera(): Promise<void> {
         try {
-            const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+            const stream = await navigator.mediaDevices.getUserMedia({
+                video: { facingMode: this.currentCameraFacingMode },
+                audio: true
+            });
             this.video.srcObject = stream;
             this.setupMediaRecorder(stream);
         } catch (error) {
             console.error('Error accessing camera:', error);
         }
+    }
+
+    private async switchCamera(): Promise<void> {
+        // Stop current video track
+        if (this.video.srcObject) {
+            (this.video.srcObject as MediaStream).getTracks().forEach(track => track.stop());
+        }
+
+        // Toggle camera facing mode
+        this.currentCameraFacingMode = this.currentCameraFacingMode === 'user' ? 'environment' : 'user';
+
+        // Start camera with new facing mode
+        await this.startCamera();
     }
 
     private setupMediaRecorder(stream: MediaStream): void {

@@ -16,11 +16,37 @@ body {
 }
 
 #video {
+    /* video should full screen */
     width: 100vw;
     height: 100vh;
     object-fit: cover; /* Ensure video covers the area without distortion */
     border-radius: 0; /* Remove border-radius for full screen effect */
     margin-bottom: 0;
+}
+
+#overlay-buttons {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    z-index: 1001; /* Ensure buttons are above video and chat */
+    display: flex;
+    gap: 10px;
+}
+
+#settings-button,
+#camera-switch-button {
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 15px;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+#settings-button:hover,
+#camera-switch-button:hover {
+    background-color: rgba(0, 0, 0, 0.7);
 }
 
 #chat-container {
@@ -67,9 +93,8 @@ body {
 
 #input-container {
     display: flex;
-    width: 90%;
+    width: 100%;
     margin-bottom: 10px; /* Space between input and buttons */
-    margin-right: 10px;
 }
 
 #text-input {
@@ -80,11 +105,11 @@ body {
 }
 
 #button-container {
+    /* put button at left  */
     display: flex;
-    width: 90%;
+    width: 100%;
     gap: 0.5rem; /* Space between buttons */
     padding-right: 1rem; /* Move buttons slightly left by adding padding to the right of the container */
-    margin-right: 10px;
 }
 
 #send-button {

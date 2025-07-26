@@ -4,10 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Live Chat</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="/src/style.css">
 </head>
 <body>
     <div id="app">
+        <div id="overlay-buttons">
+            <button id="settings-button"><i class="fas fa-cog"></i></button>
+            <button id="camera-switch-button"><i class="fas fa-camera-rotate"></i></button>
+        </div>
         <div id="settings-container" hidden>
             <h3>Audio Settings</h3>
             <label for="audio-encoding">Encoding:</label>
