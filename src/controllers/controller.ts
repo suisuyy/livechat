@@ -39,7 +39,7 @@ export class Controller {
         const image = this.view.captureVideoFrame();
         this.view.displayMessage('You', '[Audio Message]', audioDataUrl, image);
         const response = await this.model.sendMessage('', image, audioData, 'audio/mp4');
-        const aiAudioSrc = `https://text.pollinations.ai/just repeat following text:${encodeURIComponent(response)}?model=openai-audio&voice=sage`;
+        const aiAudioSrc = `https://text.pollinations.ai/now speak like japanese anime girl, cute and tender; just repeat following text:${encodeURIComponent(response)}?model=openai-audio&voice=sage`;
         this.view.displayMessage('AI', response, aiAudioSrc);
     }
 }

@@ -14,13 +14,16 @@ export class Model {
                 ,
                 {
                     role: 'user',
-                    content: [
-                        { type: 'text', text },
-                    ]
+                    content: []
                 }
+                
             ],
-            max_tokens: 1600
+            max_tokens: 16000
         };
+
+        if(text){
+            payload.messages[1].content.push({ type: 'text', text: text });
+        }
 
         if (image) {
             payload.messages[1].content.push({ type: 'image_url', image_url: { url: image } });
