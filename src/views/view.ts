@@ -158,15 +158,15 @@ export class View {
     }
 
     public addVoiceButtonListeners(startHandler: () => void, stopHandler: (audioData: string) => void): void {
-        let pointdownhandle=(e)=> {
+        let pointdownhandle = (e) => {
             e.preventDefault();
             this.recordingStartTime = Date.now();
             startHandler();
             this.voiceButton.classList.add('recording-background');
         }
-        let pointeruphandle=async (e) => {
+        let pointeruphandle = async (e) => {
             console.log("pointerup");
-            
+
             const recordingDuration = Date.now() - this.recordingStartTime;
             if (recordingDuration >= 2000) { // Only send if recording is at least 2 seconds
                 const audioData = await this.stopRecording();
@@ -184,10 +184,10 @@ export class View {
         this.voiceButton.addEventListener('pointerdown', pointdownhandle);
         this.video.addEventListener('pointerdown', pointdownhandle);
 
-        this.voiceButton.addEventListener('pointerup',pointeruphandle );
+        this.voiceButton.addEventListener('pointerup', pointeruphandle);
         this.video.addEventListener('pointerup', pointeruphandle);
 
-        this.video.addEventListener('contextmenu',(e)=>{
+        this.video.addEventListener('contextmenu', (e) => {
             e.preventDefault();
         })
     }
@@ -360,7 +360,12 @@ export class View {
             this.aiModelInput2.value = aiModel2;
             this.aiModelSelect2.value = aiModel2;
         }
-        const systemMessage = localStorage.getItem('systemMessage');        if (systemMessage) {            this.systemMessageInput.value = systemMessage;        } else {            this.systemMessageInput.value = 'reply in user\'s language, keep consice , just like normal talk, do not speak too much every time.';        }
+        const systemMessage = localStorage.getItem('systemMessage');
+        if (systemMessage) {
+            this.systemMessageInput.value = systemMessage;
+        } else {
+            
+        }
         const voicePrompt = localStorage.getItem('voicePrompt');
         if (voicePrompt) {
             this.voicePromptInput.value = voicePrompt;

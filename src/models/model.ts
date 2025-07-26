@@ -29,8 +29,6 @@ export class Model {
     constructor() {
         this.AImodel='gemini-2.5-flash-lite';
         this.AImodel2='gemini-2.5-pro';
-        this.systemMessage = 'reply in user\'s language, keep consice , just like normal talk, do not speak too much every time.';
-        this.voicePrompt = 'now speak like japanese anime girl, cute and tender; just repeat following text:';
         this.config={
             max_tokens: 16000,
             temperature: 0.7,
