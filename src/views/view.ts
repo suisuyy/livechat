@@ -32,6 +32,7 @@ export class View {
         this.cameraSwitchButton = document.getElementById('camera-switch-button') as HTMLButtonElement;
         this.cameraOffButton = document.getElementById('camera-off-button') as HTMLButtonElement;
         this.settingsContainer = document.getElementById('settings-container') as HTMLDivElement;
+        this.settingsContainer.style.display = 'none';
         this.aiModelSelect = document.getElementById('ai-model-select') as HTMLSelectElement;
         this.aiModelInput = document.getElementById('ai-model-input') as HTMLInputElement;
         this.aiModelSelect2 = document.getElementById('ai-model-select-2') as HTMLSelectElement;
