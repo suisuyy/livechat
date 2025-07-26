@@ -28,16 +28,30 @@
         </div>
         <video id="video" autoplay muted></video>
         <div id="chat-container">
-            <div id="chat-history"></div>
             <div id="input-container">
                 <input type="text" id="text-input" placeholder="Ask a question...">
             </div>
             <div id="button-container">
-                <button id="voice-button">Voice</button>
-                <button id="send-button">Send</button>
+                <button id="voice-button"><i class="fas fa-microphone"></i></button>
+                <button id="send-button"><i class="fas fa-paper-plane"></i></button>
             </div>
+            <div id="chat-history"></div>
+
         </div>
     </div>
     <script type="module" src="/src/main.ts"></script>
+    <script>
+        const buttons = document.querySelectorAll('button');
+
+buttons.forEach(button => {
+  
+  button.addEventListener('touchstart', (event) => {
+    event.preventDefault();
+  });
+
+
+});
+
+    </script>
 </body>
 </html>

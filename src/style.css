@@ -5,6 +5,15 @@ body {
     overflow: hidden; /* Prevent scrollbars from appearing due to video height */
 }
 
+
+button {
+    /* ... other styles ... */
+    user-select: none; /* Prevent text selection */
+    -webkit-user-select: none; /* For older Webkit browsers */
+    -ms-user-select: none; /* For older Edge browsers */
+    -moz-user-select: none; /* For older Firefox browsers */
+  }
+
 #app {
     display: flex;
     flex-direction: column;
@@ -53,9 +62,9 @@ body {
     position: absolute; /* Overlay on top of the video */
     bottom: 0;
     left: 0;
-    width: 100%;
+    width: 90vw;
     height: 50vh; /* Adjust height as needed for the overlay */
-    background-color: rgba(255, 255, 255, 0.5); /* 50% transparent white background */
+    background-color:rgb(10 0 0 / 65%); /* 50% transparent white background */
     border: none; /* Remove border */
     border-radius: 0;
     padding: 1rem;
@@ -64,6 +73,7 @@ body {
 }
 
 #chat-history {
+    color: white;
     flex-grow: 1; /* Allow chat history to take available space */
     overflow-y: auto;
     margin-bottom: 1rem;
@@ -93,11 +103,13 @@ body {
 
 #input-container {
     display: flex;
-    width: 100%;
+    width: 90vw;
     margin-bottom: 10px; /* Space between input and buttons */
 }
 
 #text-input {
+    background-color: rgb(10 0 0 / 65%);
+    color: white;
     flex-grow: 1;
     border: 1px solid #ccc;
     border-radius: 4px;
@@ -144,6 +156,7 @@ body {
     object-fit: cover;
     cursor: pointer;
     border-radius: 4px;
+    opacity: 0.3; 
 }
 
 .modal {

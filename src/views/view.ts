@@ -22,11 +22,11 @@ export class View {
         this.cameraSwitchButton = document.getElementById('camera-switch-button') as HTMLButtonElement;
         this.settingsContainer = document.getElementById('settings-container') as HTMLDivElement;
 
-        this.settingsButton.addEventListener('click', () => {
+        this.settingsButton.addEventListener('pointerup', () => {
             this.settingsContainer.hidden = !this.settingsContainer.hidden;
         });
 
-        this.cameraSwitchButton.addEventListener('click', () => {
+        this.cameraSwitchButton.addEventListener('pointerup', () => {
             this.switchCamera();
         });
     }
@@ -40,7 +40,7 @@ export class View {
     }
 
     public addSendMessageListener(handler: () => void): void {
-        this.sendButton.addEventListener('click', handler);
+        this.sendButton.addEventListener('pointerup', handler);
         this.textInput.addEventListener('keydown', (event) => {
             if (event.key === 'Enter') {
                 handler();
@@ -49,12 +49,12 @@ export class View {
     }
 
     public addVoiceButtonListeners(startHandler: () => void, stopHandler: (audioData: string) => void): void {
-        this.voiceButton.addEventListener('mousedown', () => {
+        this.voiceButton.addEventListener('pointerdown', () => {
             this.recordingStartTime = Date.now();
             startHandler();
         });
 
-        this.voiceButton.addEventListener('mouseup', async () => {
+        this.voiceButton.addEventListener('pointerup', async () => {
             const recordingDuration = Date.now() - this.recordingStartTime;
             if (recordingDuration >= 2000) { // Only send if recording is at least 2 seconds
                 const audioData = await this.stopRecording();
@@ -83,7 +83,7 @@ export class View {
             const imageElement = document.createElement('img');
             imageElement.src = imageUrl;
             imageElement.classList.add('thumbnail'); // Add a class for styling
-            imageElement.addEventListener('click', () => {
+            imageElement.addEventListener('pointerup', () => {
                 this.enlargeImage(imageUrl);
             });
             imageWrapper.appendChild(imageElement);
@@ -107,7 +107,7 @@ export class View {
     private enlargeImage(imageUrl: string): void {
         const modal = document.createElement('div');
         modal.classList.add('modal');
-        modal.addEventListener('click', () => {
+        modal.addEventListener('pointerup', () => {
             document.body.removeChild(modal);
         });
 

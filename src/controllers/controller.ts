@@ -15,9 +15,9 @@ export class Controller {
     }
 
     private async handleSendMessage(): Promise<void> {
-        const text = this.view.getTextInputValue();
+        let text = this.view.getTextInputValue();
         if (!text) {
-            return;
+            text='descibe what you see and listen for me';
         }
 
         const image = this.view.captureVideoFrame();
