@@ -2,39 +2,74 @@ body {
     font-family: sans-serif;
     margin: 0;
     background-color: #f0f0f0;
+    overflow: hidden; /* Prevent scrollbars from appearing due to video height */
 }
 
 #app {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 1rem;
+    padding: 0;
+    width: 100vw;
+    height: 100vh;
+    position: relative; /* For positioning chat-container */
 }
 
 #video {
-    width: 100%;
-    max-width: 600px;
-    border-radius: 8px;
-    margin-bottom: 1rem;
+    width: 100vw;
+    height: 100vh;
+    object-fit: cover; /* Ensure video covers the area without distortion */
+    border-radius: 0; /* Remove border-radius for full screen effect */
+    margin-bottom: 0;
 }
 
 #chat-container {
+    position: absolute; /* Overlay on top of the video */
+    bottom: 0;
+    left: 0;
     width: 100%;
-    max-width: 600px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
+    height: 50vh; /* Adjust height as needed for the overlay */
+    background-color: rgba(255, 255, 255, 0.5); /* 50% transparent white background */
+    border: none; /* Remove border */
+    border-radius: 0;
     padding: 1rem;
-    background-color: #fff;
+    display: flex;
+    flex-direction: column;
 }
 
 #chat-history {
-    height: 300px;
+    flex-grow: 1; /* Allow chat history to take available space */
     overflow-y: auto;
     margin-bottom: 1rem;
+    padding-right: 10px; /* Add some padding for scrollbar */
+}
+
+.chat-message {
+    margin-bottom: 10px; /* Space between messages */
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.you-message {
+    text-align: right;
+    background-color: rgba(0, 123, 255, 0.1); /* Light blue background for user messages */
+}
+
+.ai-message {
+    text-align: left;
+    background-color: rgba(40, 167, 69, 0.1); /* Light green background for AI messages */
+}
+
+.message-image-wrapper,
+.message-audio-wrapper {
+    margin-top: 5px; /* Space between text and media */
 }
 
 #input-container {
     display: flex;
+    width: 90%;
+    margin-bottom: 10px; /* Space between input and buttons */
+    margin-right: 10px;
 }
 
 #text-input {
@@ -44,14 +79,38 @@ body {
     padding: 0.5rem;
 }
 
+#button-container {
+    display: flex;
+    width: 90%;
+    gap: 0.5rem; /* Space between buttons */
+    padding-right: 1rem; /* Move buttons slightly left by adding padding to the right of the container */
+    margin-right: 10px;
+}
+
 #send-button {
     border: none;
     background-color: #007bff;
     color: #fff;
     border-radius: 4px;
     padding: 0.5rem 1rem;
-    margin-left: 0.5rem;
     cursor: pointer;
+    margin-left: 0; /* Remove margin-left as gap will handle spacing */
+}
+
+#voice-button {
+    border: none;
+    background-color: #28a745; /* Green color for voice button */
+    color: #fff;
+    border-radius: 4px;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.2s ease;
+    margin-left: 0; /* Remove margin-left as gap will handle spacing */
+}
+
+#voice-button:hover {
+    background-color: #218838;
 }
 
 .thumbnail {
@@ -59,7 +118,6 @@ body {
     height: 100px;
     object-fit: cover;
     cursor: pointer;
-    margin-top: 5px;
     border-radius: 4px;
 }
 

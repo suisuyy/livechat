@@ -55,24 +55,35 @@ export class View {
 
     public displayMessage(sender: string, message: string, audioSrc?: string, imageUrl?: string): void {
         const messageElement = document.createElement('div');
-        messageElement.innerHTML = `<strong>${sender}:</strong> ${message}`;
+        messageElement.classList.add('chat-message');
+        messageElement.classList.add(sender.toLowerCase() + '-message'); // Add class for sender
+
+        const textElement = document.createElement('div');
+        textElement.innerHTML = `<strong>${sender}:</strong> ${message}`;
+        messageElement.appendChild(textElement);
 
         if (imageUrl) {
+            const imageWrapper = document.createElement('div');
+            imageWrapper.classList.add('message-image-wrapper');
             const imageElement = document.createElement('img');
             imageElement.src = imageUrl;
             imageElement.classList.add('thumbnail'); // Add a class for styling
             imageElement.addEventListener('click', () => {
                 this.enlargeImage(imageUrl);
             });
-            messageElement.appendChild(imageElement);
+            imageWrapper.appendChild(imageElement);
+            messageElement.appendChild(imageWrapper);
         }
 
         if (audioSrc) {
+            const audioWrapper = document.createElement('div');
+            audioWrapper.classList.add('message-audio-wrapper');
             const audioElement = document.createElement('audio');
             audioElement.controls = true;
             audioElement.src = audioSrc;
             audioElement.setAttribute('autoplay', 'true');
-            messageElement.appendChild(audioElement);
+            audioWrapper.appendChild(audioElement);
+            messageElement.appendChild(audioWrapper);
         }
         this.chatHistory.appendChild(messageElement);
         this.chatHistory.scrollTop = this.chatHistory.scrollHeight;
