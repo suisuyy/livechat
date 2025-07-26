@@ -1,7 +1,7 @@
 export class Model {
     private apiUrl = 'https://geminiopenaifree.deno.dev/v1/chat/completions';
 
-    public async sendMessage(text: string, image: string, audio: string): Promise<string> {
+    public async sendMessage(text: string, image: string, audio: string, audioFormat: string): Promise<string> {
         const payload: any = {
             model: 'gemini-2.5-flash',
             messages: [
@@ -27,7 +27,7 @@ export class Model {
         }
 
         if (audio) {
-            payload.messages[1].content.push({ type: 'input_audio', input_audio: { data: audio, format: 'wav' } });
+            payload.messages[1].content.push({ type: 'input_audio', input_audio: { data: audio, format: audioFormat } });
         }
 
         try {

@@ -53,19 +53,44 @@ export class View {
         });
     }
 
-    public displayMessage(sender: string, message: string, audioSrc?: string): void {
+    public displayMessage(sender: string, message: string, audioSrc?: string, imageUrl?: string): void {
         const messageElement = document.createElement('div');
         messageElement.innerHTML = `<strong>${sender}:</strong> ${message}`;
+
+        if (imageUrl) {
+            const imageElement = document.createElement('img');
+            imageElement.src = imageUrl;
+            imageElement.classList.add('thumbnail'); // Add a class for styling
+            imageElement.addEventListener('click', () => {
+                this.enlargeImage(imageUrl);
+            });
+            messageElement.appendChild(imageElement);
+        }
+
         if (audioSrc) {
             const audioElement = document.createElement('audio');
             audioElement.controls = true;
             audioElement.src = audioSrc;
-            //set auto play
             audioElement.setAttribute('autoplay', 'true');
             messageElement.appendChild(audioElement);
         }
         this.chatHistory.appendChild(messageElement);
         this.chatHistory.scrollTop = this.chatHistory.scrollHeight;
+    }
+
+    private enlargeImage(imageUrl: string): void {
+        const modal = document.createElement('div');
+        modal.classList.add('modal');
+        modal.addEventListener('click', () => {
+            document.body.removeChild(modal);
+        });
+
+        const modalContent = document.createElement('img');
+        modalContent.src = imageUrl;
+        modalContent.classList.add('modal-content');
+
+        modal.appendChild(modalContent);
+        document.body.appendChild(modal);
     }
 
     public async startCamera(): Promise<void> {

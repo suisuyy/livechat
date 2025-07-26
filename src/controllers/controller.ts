@@ -20,10 +20,10 @@ export class Controller {
             return;
         }
 
-        this.view.displayMessage('You', text);
+        const image = this.view.captureVideoFrame();
+        this.view.displayMessage('You', text, undefined, image);
         this.view.clearTextInput();
 
-        const image = this.view.captureVideoFrame();
         const response = await this.model.sendMessage(text, image, '', '');
         this.view.displayMessage('AI', response);
     }
@@ -36,10 +36,10 @@ export class Controller {
 
     private async handleStopRecording(audioData: string): Promise<void> {
         const audioDataUrl = `data:audio/mp4;base64,${audioData}`;
-        this.view.displayMessage('You', '[Audio Message]', audioDataUrl);
         const image = this.view.captureVideoFrame();
+        this.view.displayMessage('You', '[Audio Message]', audioDataUrl, image);
         const response = await this.model.sendMessage('', image, audioData, 'audio/mp4');
-        const aiAudioSrc = `https://text.pollinations.ai/just repeat following text:${encodeURIComponent(response)}?model=openai-audio&voice=nova`;
+        const aiAudioSrc = `https://text.pollinations.ai/just repeat following text:${encodeURIComponent(response)}?model=openai-audio&voice=sage`;
         this.view.displayMessage('AI', response, aiAudioSrc);
     }
 }
