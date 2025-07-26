@@ -7,6 +7,8 @@ body {
 
 
 button {
+    font-size: large;
+
     /* ... other styles ... */
     user-select: none; /* Prevent text selection */
     -webkit-user-select: none; /* For older Webkit browsers */
@@ -114,6 +116,7 @@ button {
 }
 
 #text-input {
+    font-size: large;
     background-color: rgb(10 0 0 / 65%);
     color: white;
     flex-grow: 1;
