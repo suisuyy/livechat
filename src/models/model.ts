@@ -1,6 +1,9 @@
 export class Model {
     private apiUrl = 'https://geminiopenaifree.deno.dev/v1/chat/completions';
     AImodel: string;
+    AImodel2: string;
+    systemMessage: string;
+    voicePrompt: string;
     config: { 
         max_tokens: number; 
         temperature: number;
@@ -11,8 +14,23 @@ export class Model {
         this.AImodel = model;
     }
 
+    public setAiModel2(model: string): void {
+        this.AImodel2 = model;
+    }
+
+    public setSystemMessage(message: string): void {
+        this.systemMessage = message;
+    }
+
+    public setVoicePrompt(prompt: string): void {
+        this.voicePrompt = prompt;
+    }
+
     constructor() {
         this.AImodel='gemini-2.5-flash-lite';
+        this.AImodel2='gemini-2.5-pro';
+        this.systemMessage = 'reply in user\'s language, keep consice , just like normal talk, do not speak too much every time.';
+        this.voicePrompt = 'now speak like japanese anime girl, cute and tender; just repeat following text:';
         this.config={
             max_tokens: 16000,
             temperature: 0.7,
@@ -22,14 +40,14 @@ export class Model {
         }
     }
 
-    public async sendMessage(text: string, image: string, audio: string, audioFormat: string): Promise<string> {
+    public async sendMessage(text: string, image: string, audio: string, audioFormat: string, modelToUse: string): Promise<string> {
         const payload: any = {
-            model: this.AImodel,
+            model: modelToUse,
             messages: [
                 {
                     role:'system',
                     content: [
-                        { type: 'text', text: 'You are a helpful assistant.please be concise, do not speak too much every time, be short, just like normal talk between 2 friends' },
+                        { type: 'text', text: this.systemMessage },
                     ]
                 }
                 ,
@@ -66,8 +84,8 @@ export class Model {
             const data = await response.json();
             return data.choices[0].message.content;
         } catch (error) {
-            console.error('Error sending message:', error);
-            return 'Error: Could not connect to the server.';
+            console.error(`Error sending message to ${modelToUse}:`, error);
+            return `Error: Could not connect to the server for ${modelToUse}.`;
         }
     }
 }

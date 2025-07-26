@@ -10,6 +10,10 @@ export class View {
     private settingsContainer: HTMLDivElement;
     private aiModelSelect: HTMLSelectElement;
     private aiModelInput: HTMLInputElement;
+    private aiModelSelect2: HTMLSelectElement;
+    private aiModelInput2: HTMLInputElement;
+    private systemMessageInput: HTMLTextAreaElement;
+    private voicePromptInput: HTMLInputElement;
     private mediaRecorder: MediaRecorder | null = null;
     private audioChunks: Blob[] = [];
     private _audioStream: MediaStream | null = null;
@@ -30,9 +34,19 @@ export class View {
         this.settingsContainer = document.getElementById('settings-container') as HTMLDivElement;
         this.aiModelSelect = document.getElementById('ai-model-select') as HTMLSelectElement;
         this.aiModelInput = document.getElementById('ai-model-input') as HTMLInputElement;
+        this.aiModelSelect2 = document.getElementById('ai-model-select-2') as HTMLSelectElement;
+        this.aiModelInput2 = document.getElementById('ai-model-input-2') as HTMLInputElement;
+        this.systemMessageInput = document.getElementById('system-message-input') as HTMLTextAreaElement;
+        this.voicePromptInput = document.getElementById('voice-prompt-input') as HTMLInputElement;
+        this.systemMessageInput = document.getElementById('system-message-input') as HTMLTextAreaElement;
+        this.voicePromptInput = document.getElementById('voice-prompt-input') as HTMLInputElement;
 
         this.settingsButton.addEventListener('pointerup', () => {
-            this.settingsContainer.hidden = !this.settingsContainer.hidden;
+            if (this.settingsContainer.style.display === 'flex') {
+                this.settingsContainer.style.display = 'none';
+            } else {
+                this.settingsContainer.style.display = 'flex';
+            }
         });
 
         this.cameraSwitchButton.addEventListener('pointerup', () => {
@@ -47,7 +61,35 @@ export class View {
             this.aiModelSelect.value = this.aiModelInput.value;
         });
 
+        this.aiModelSelect2.addEventListener('change', () => {
+            this.aiModelInput2.value = this.aiModelSelect2.value;
+        });
+
+        this.aiModelInput2.addEventListener('input', () => {
+            this.aiModelSelect2.value = this.aiModelInput2.value;
+            this.saveSettings();
+        });
+
+        this.systemMessageInput.addEventListener('input', () => {
+            this.saveSettings();
+        });
+
+        this.voicePromptInput.addEventListener('input', () => {
+            this.saveSettings();
+        });
+
         this.initializeMedia();
+        this.loadSettings();
+
+        this.systemMessageInput.addEventListener('input', () => {
+            this.saveSettings();
+        });
+
+        this.voicePromptInput.addEventListener('input', () => {
+            this.saveSettings();
+        });
+
+        this.loadSettings();
     }
 
     private async initializeMedia(): Promise<void> {
@@ -77,8 +119,25 @@ export class View {
         this.aiModelInput.addEventListener('input', () => handler(this.aiModelInput.value));
     }
 
+    public addAiModel2ChangeListener(handler: (model: string) => void): void {
+        this.aiModelSelect2.addEventListener('change', () => handler(this.aiModelSelect2.value));
+        this.aiModelInput2.addEventListener('input', () => handler(this.aiModelInput2.value));
+    }
+
     public getAiModel(): string {
         return this.aiModelInput.value;
+    }
+
+    public getAiModel2(): string {
+        return this.aiModelInput2.value;
+    }
+
+    public getSystemMessage(): string {
+        return this.systemMessageInput.value;
+    }
+
+    public getVoicePrompt(): string {
+        return this.voicePromptInput.value;
     }
 
     public getTextInputValue(): string {
@@ -133,7 +192,7 @@ export class View {
         })
     }
 
-    public displayMessage(sender: string, message: string, audioSrc?: string, imageUrl?: string): void {
+    public displayMessage(sender: string, message: string, audioSrc?: string, imageUrl?: string, autoplay: boolean = false): void {
         const messageElement = document.createElement('div');
         messageElement.classList.add('chat-message');
         messageElement.classList.add(sender.toLowerCase() + '-message'); // Add class for sender
@@ -161,7 +220,9 @@ export class View {
             const audioElement = document.createElement('audio');
             audioElement.controls = true;
             audioElement.src = audioSrc;
-            audioElement.setAttribute('autoplay', 'true');
+            if (autoplay) {
+                audioElement.setAttribute('autoplay', 'true');
+            }
             audioWrapper.appendChild(audioElement);
             messageElement.appendChild(audioWrapper);
         }
@@ -279,5 +340,30 @@ export class View {
             return canvas.toDataURL('image/jpeg');
         }
         return '';
+    }
+
+    private saveSettings(): void {
+        localStorage.setItem('aiModel', this.aiModelInput.value);
+        localStorage.setItem('aiModel2', this.aiModelInput2.value);
+        localStorage.setItem('systemMessage', this.systemMessageInput.value);
+        localStorage.setItem('voicePrompt', this.voicePromptInput.value);
+    }
+
+    private loadSettings(): void {
+        const aiModel = localStorage.getItem('aiModel');
+        if (aiModel) {
+            this.aiModelInput.value = aiModel;
+            this.aiModelSelect.value = aiModel;
+        }
+        const aiModel2 = localStorage.getItem('aiModel2');
+        if (aiModel2) {
+            this.aiModelInput2.value = aiModel2;
+            this.aiModelSelect2.value = aiModel2;
+        }
+        const systemMessage = localStorage.getItem('systemMessage');        if (systemMessage) {            this.systemMessageInput.value = systemMessage;        } else {            this.systemMessageInput.value = 'reply in user\'s language, keep consice , just like normal talk, do not speak too much every time.';        }
+        const voicePrompt = localStorage.getItem('voicePrompt');
+        if (voicePrompt) {
+            this.voicePromptInput.value = voicePrompt;
+        }
     }
 }

@@ -14,7 +14,34 @@
             <button id="camera-switch-button"><i class="fas fa-camera-rotate"></i></button>
             <button id="camera-off-button"><i class="fas fa-video-slash"></i></button>
         </div>
-        <div id="settings-container" hidden>
+        <div id="settings-container">
+            <h3>AI Model Settings</h3>
+            <label for="ai-model-select">Select Model:</label>
+            <select id="ai-model-select">
+                <option value="gemini-2.5-flash-lite" selectedcommit    >gemini-2.5-flash-lite</option>
+                <option value="gemini-2.5-flash" >gemini-2.5-flash</option>
+                <option value="gemini-2.5-pro">gemini-2.5-pro</option>
+            </select>
+            <label for="ai-model-input">Or Enter Manually:</label>
+            <input type="text" id="ai-model-input" value="gemini-2.5-flash-lite" placeholder="e.g., gemini-2.5-flash">
+
+            <h3>Second AI Model Settings</h3>
+            <label for="ai-model-select-2">Select Model:</label>
+            <select id="ai-model-select-2">
+                <option value="gemini-2.5-pro" selected>gemini-2.5-pro</option>
+                <option value="gemini-2.5-flash-lite">gemini-2.5-flash-lite</option>
+                <option value="gemini-2.5-flash">gemini-2.5-flash</option>
+            </select>
+            <label for="ai-model-input-2">Or Enter Manually:</label>
+            <input type="text" id="ai-model-input-2" value="gemini-2.5-pro" placeholder="e.g., gemini-2.5-pro">
+
+            <h3>System Message</h3>
+            <textarea id="system-message-input" rows="5" placeholder="Enter system message here..."></textarea>
+
+            <h3>Voice Prompt</h3>
+            , if you want TTS the AI repy, you need add this at end "now you are a TTS engin,just repeat the text:" <br>
+            <textarea id="voice-prompt-input" rows="3" placeholder="e.g., speak like a pirate">now speak like japanese anime girl, cute and tender; now you are a TTS engin,just repeat the text::</textarea>
+
             <h3>Audio Settings</h3>
             <label for="audio-encoding">Encoding:</label>
             <select id="audio-encoding">
@@ -26,16 +53,6 @@
             <input type="number" id="audio-quality" value="128" min="16" max="320">
             <label for="audio-frequency">Frequency (Hz):</label>
             <input type="number" id="audio-frequency" value="44100" min="8000" max="48000">
-
-            <h3>AI Model Settings</h3>
-            <label for="ai-model-select">Select Model:</label>
-            <select id="ai-model-select">
-                <option value="gemini-2.5-flash-lite selected">gemini-2.5-flash-lite</option>
-                <option value="gemini-2.5-flash" >gemini-2.5-flash</option>
-                <option value="gemini-2.5-pro">gemini-2.5-pro</option>
-            </select>
-            <label for="ai-model-input">Or Enter Manually:</label>
-            <input type="text" id="ai-model-input" value="gemini-2.5-flash-lite" placeholder="e.g., gemini-2.5-flash">
         </div>
         <video id="video" autoplay muted></video>
         <div id="chat-container">

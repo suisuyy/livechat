@@ -16,10 +16,25 @@ export class Controller {
 
         // Set initial AI model
         this.model.setAiModel(this.view.getAiModel());
+        this.model.setAiModel2(this.view.getAiModel2());
+        this.model.setSystemMessage(this.view.getSystemMessage());
+        this.model.setVoicePrompt(this.view.getVoicePrompt());
 
         // Listen for changes in AI model selection
         this.view.addAiModelChangeListener((model: string) => {
             this.model.setAiModel(model);
+        });
+
+        this.view.addAiModel2ChangeListener((model: string) => {
+            this.model.setAiModel2(model);
+        });
+
+        this.view.systemMessageInput.addEventListener('input', () => {
+            this.model.setSystemMessage(this.view.getSystemMessage());
+        });
+
+        this.view.voicePromptInput.addEventListener('input', () => {
+            this.model.setVoicePrompt(this.view.getVoicePrompt());
         });
     }
 
@@ -33,8 +48,11 @@ export class Controller {
         this.view.displayMessage('You', text, undefined, image);
         this.view.clearTextInput();
 
-        const response = await this.model.sendMessage(text, image, '', '');
-        this.view.displayMessage(this.model.AImodel || 'AI', response);
+        const response1 = await this.model.sendMessage(text, image, '', '', this.model.AImodel);
+        this.view.displayMessage(this.model.AImodel || 'AI', response1);
+
+        const response2 = await this.model.sendMessage(text, image, '', '', this.model.AImodel2);
+        this.view.displayMessage(this.model.AImodel2 || 'AI', response2);
     }
 
     private handleStartRecording(): void {
@@ -45,9 +63,14 @@ export class Controller {
         const audioDataUrl = `data:audio/mp4;base64,${audioData}`;
         const image = this.view.captureVideoFrame();
         this.view.displayMessage('You', '[Audio Message]', audioDataUrl, image);
-        const response = await this.model.sendMessage('', image, audioData, 'audio/mp4');
-        const aiAudioSrc = `https://text.pollinations.ai/now speak like japanese anime girl, cute and tender; just repeat following text:${encodeURIComponent(response)}?model=openai-audio&voice=sage`;
-        this.view.displayMessage('AI', response, aiAudioSrc);
+        let text = this.view.getTextInputValue();
+        const response1 = await this.model.sendMessage(text, image, audioData, 'audio/mp4', this.model.AImodel);
+        const aiAudioSrc1 = `https://text.pollinations.ai/${encodeURIComponent(this.model.voicePrompt)}${encodeURIComponent(response1)}?model=openai-audio&voice=sage`;
+        this.view.displayMessage(this.model.AImodel || 'AI', response1, aiAudioSrc1, undefined, true);
+
+        const response2 = await this.model.sendMessage('', image, audioData, 'audio/mp4', this.model.AImodel2);
+        const aiAudioSrc2 = `https://text.pollinations.ai/${encodeURIComponent(this.model.voicePrompt)}${encodeURIComponent(response2)}?model=openai-audio&voice=sage`;
+        this.view.displayMessage(this.model.AImodel2 || 'AI', response2, aiAudioSrc2, undefined, false);
     }
 
     private handleCameraOff(): void {
