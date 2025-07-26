@@ -12,6 +12,14 @@ export class Controller {
         this.view.addSendMessageListener(this.handleSendMessage.bind(this));
         this.view.addVoiceButtonListeners(this.handleStartRecording.bind(this), this.handleStopRecording.bind(this));
         this.view.startCamera();
+
+        // Set initial AI model
+        this.model.setAiModel(this.view.getAiModel());
+
+        // Listen for changes in AI model selection
+        this.view.addAiModelChangeListener((model: string) => {
+            this.model.setAiModel(model);
+        });
     }
 
     private async handleSendMessage(): Promise<void> {

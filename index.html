@@ -25,6 +25,16 @@
             <input type="number" id="audio-quality" value="128" min="16" max="320">
             <label for="audio-frequency">Frequency (Hz):</label>
             <input type="number" id="audio-frequency" value="44100" min="8000" max="48000">
+
+            <h3>AI Model Settings</h3>
+            <label for="ai-model-select">Select Model:</label>
+            <select id="ai-model-select">
+                <option value="gemini-2.5-flash-lite selected">gemini-2.5-flash-lite</option>
+                <option value="gemini-2.5-flash" >gemini-2.5-flash</option>
+                <option value="gemini-2.5-pro">gemini-2.5-pro</option>
+            </select>
+            <label for="ai-model-input">Or Enter Manually:</label>
+            <input type="text" id="ai-model-input" value="gemini-2.5-flash-lite" placeholder="e.g., gemini-2.5-flash">
         </div>
         <video id="video" autoplay muted></video>
         <div id="chat-container">

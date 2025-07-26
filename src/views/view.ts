@@ -7,6 +7,8 @@ export class View {
     private settingsButton: HTMLButtonElement;
     private cameraSwitchButton: HTMLButtonElement;
     private settingsContainer: HTMLDivElement;
+    private aiModelSelect: HTMLSelectElement;
+    private aiModelInput: HTMLInputElement;
     private mediaRecorder: MediaRecorder | null = null;
     private audioChunks: Blob[] = [];
     private recordingStartTime: number = 0;
@@ -21,6 +23,8 @@ export class View {
         this.settingsButton = document.getElementById('settings-button') as HTMLButtonElement;
         this.cameraSwitchButton = document.getElementById('camera-switch-button') as HTMLButtonElement;
         this.settingsContainer = document.getElementById('settings-container') as HTMLDivElement;
+        this.aiModelSelect = document.getElementById('ai-model-select') as HTMLSelectElement;
+        this.aiModelInput = document.getElementById('ai-model-input') as HTMLInputElement;
 
         this.settingsButton.addEventListener('pointerup', () => {
             this.settingsContainer.hidden = !this.settingsContainer.hidden;
@@ -29,6 +33,23 @@ export class View {
         this.cameraSwitchButton.addEventListener('pointerup', () => {
             this.switchCamera();
         });
+
+        this.aiModelSelect.addEventListener('change', () => {
+            this.aiModelInput.value = this.aiModelSelect.value;
+        });
+
+        this.aiModelInput.addEventListener('input', () => {
+            this.aiModelSelect.value = this.aiModelInput.value;
+        });
+    }
+
+    public addAiModelChangeListener(handler: (model: string) => void): void {
+        this.aiModelSelect.addEventListener('change', () => handler(this.aiModelSelect.value));
+        this.aiModelInput.addEventListener('input', () => handler(this.aiModelInput.value));
+    }
+
+    public getAiModel(): string {
+        return this.aiModelInput.value;
     }
 
     public getTextInputValue(): string {

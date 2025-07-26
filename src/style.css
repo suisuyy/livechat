@@ -82,6 +82,8 @@ button {
     overflow-y: auto;
     margin-bottom: 1rem;
     padding-right: 10px; /* Add some padding for scrollbar */
+
+    padding-bottom: 200px;
 }
 
 .chat-message {
@@ -182,4 +184,12 @@ button {
     display: block;
     width: 80%;
     max-width: 700px;
+}
+
+#settings-container {
+    position: absolute;
+    top: 50px;
+    left: 0;
+    height: 30vh;
+    z-index: 1000;
 }

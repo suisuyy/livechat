@@ -7,9 +7,12 @@ export class Model {
          top_p: number; 
          stream: boolean; stop: null; 
         };
-    // init constructor
+    public setAiModel(model: string): void {
+        this.AImodel = model;
+    }
+
     constructor() {
-        this.AImodel='gemini-2.5-flash';
+        this.AImodel='gemini-2.5-flash-lite';
         this.config={
             max_tokens: 16000,
             temperature: 0.7,
