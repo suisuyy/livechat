@@ -56,6 +56,8 @@ export class View {
             this.voiceButton.classList.add('recording-background');
         }
         let pointeruphandle=async (e) => {
+            console.log("pointerup");
+            
             const recordingDuration = Date.now() - this.recordingStartTime;
             if (recordingDuration >= 2000) { // Only send if recording is at least 2 seconds
                 const audioData = await this.stopRecording();
@@ -76,6 +78,9 @@ export class View {
         this.voiceButton.addEventListener('pointerup',pointeruphandle );
         this.video.addEventListener('pointerup', pointeruphandle);
 
+        this.video.addEventListener('contextmenu',(e)=>{
+            e.preventDefault();
+        })
     }
 
     public displayMessage(sender: string, message: string, audioSrc?: string, imageUrl?: string): void {
