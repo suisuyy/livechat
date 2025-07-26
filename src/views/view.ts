@@ -49,12 +49,13 @@ export class View {
     }
 
     public addVoiceButtonListeners(startHandler: () => void, stopHandler: (audioData: string) => void): void {
-        this.voiceButton.addEventListener('pointerdown', () => {
+        let pointdownhandle=(e)=> {
+            e.preventDefault();
             this.recordingStartTime = Date.now();
             startHandler();
-        });
-
-        this.voiceButton.addEventListener('pointerup', async () => {
+            this.voiceButton.classList.add('recording-background');
+        }
+        let pointeruphandle=async (e) => {
             const recordingDuration = Date.now() - this.recordingStartTime;
             if (recordingDuration >= 2000) { // Only send if recording is at least 2 seconds
                 const audioData = await this.stopRecording();
@@ -65,7 +66,16 @@ export class View {
                 this.stopRecording(); // Stop recording but don't send if too short
                 console.log("Recording too short, not sending.");
             }
-        });
+            this.voiceButton.classList.remove('recording-background');
+
+        }
+
+        this.voiceButton.addEventListener('pointerdown', pointdownhandle);
+        this.video.addEventListener('pointerdown', pointdownhandle);
+
+        this.voiceButton.addEventListener('pointerup',pointeruphandle );
+        this.video.addEventListener('pointerup', pointeruphandle);
+
     }
 
     public displayMessage(sender: string, message: string, audioSrc?: string, imageUrl?: string): void {

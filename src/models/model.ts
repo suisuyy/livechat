@@ -1,9 +1,27 @@
 export class Model {
     private apiUrl = 'https://geminiopenaifree.deno.dev/v1/chat/completions';
+    AImodel: string;
+    config: { 
+        max_tokens: number; 
+        temperature: number;
+         top_p: number; 
+         stream: boolean; stop: null; 
+        };
+    // init constructor
+    constructor() {
+        this.AImodel='gemini-2.5-flash';
+        this.config={
+            max_tokens: 16000,
+            temperature: 0.7,
+            top_p: 1,
+            stream: false,
+            stop: null
+        }
+    }
 
     public async sendMessage(text: string, image: string, audio: string, audioFormat: string): Promise<string> {
         const payload: any = {
-            model: 'gemini-2.5-flash',
+            model: this.AImodel,
             messages: [
                 {
                     role:'system',
@@ -18,7 +36,7 @@ export class Model {
                 }
                 
             ],
-            max_tokens: 16000
+            ...this.config
         };
 
         if(text){

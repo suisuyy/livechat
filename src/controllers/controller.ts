@@ -25,13 +25,11 @@ export class Controller {
         this.view.clearTextInput();
 
         const response = await this.model.sendMessage(text, image, '', '');
-        this.view.displayMessage('AI', response);
+        this.view.displayMessage(this.model.AImodel || 'AI', response);
     }
 
     private handleStartRecording(): void {
-        setTimeout(() => {
             this.view.startRecording();
-        }, 200);
     }
 
     private async handleStopRecording(audioData: string): Promise<void> {
